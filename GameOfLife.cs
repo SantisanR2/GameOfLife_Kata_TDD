@@ -4,23 +4,25 @@ public class GameOfLife(Cell[,] universe)
 {
     private Cell[,] _universe = universe;
 
+    private readonly int _widthUniverse = universe.GetLength(0);
+
+    private readonly int _heightUniverse = universe.GetLength(1);
+    
+
     public void NextGen()
     {
-        var newUniverse = new Cell[_universe.GetLength(0), _universe.GetLength(1)];
-        foreach (var (row, column) in Enumerable.Range(0, 10).SelectMany(i => Enumerable.Range(0, 10).Select(j => (i, j))))
-        {
-            newUniverse[row, column] = new Cell(DeadCell.GetInstance());
-        }
+        var newUniverse = GameOfLifeTest.GenerateEmptyUniverse(_widthUniverse, _heightUniverse);
         
-        for (var row = 0; row < _universe.GetLength(0); row++)
+        foreach (var row in Enumerable.Range(0, _widthUniverse))
         {
-            for (var column = 0; column < _universe.GetLength(1); column++)
+            foreach (var column in Enumerable.Range(0, _heightUniverse))
             {
                 var numberOfAliveNeighbors = GetNumberOfAliveNeighbors(row, column);
                 var nextState = _universe[row, column].GetState().NextState(numberOfAliveNeighbors);
                 newUniverse[row, column] = new Cell(nextState);
             }
         }
+        
         _universe = newUniverse;
     }
 
@@ -28,30 +30,21 @@ public class GameOfLife(Cell[,] universe)
     {
         var numberOfAliveNeighbors = 0;
         
-        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
-            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row - 1, column + 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row >= 0 && row < _universe.GetLength(0) &&
-            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row, column + 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
-            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row + 1 , column + 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
-            column >= 0 && column < _universe.GetLength(1) && _universe[row - 1, column].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
-            column >= 0 && column < _universe.GetLength(1) && _universe[row + 1, column].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
-            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row - 1, column - 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row >= 0 && row < _universe.GetLength(0) &&
-            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row, column - 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
-        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
-            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row + 1, column - 1].GetState() is LivingCell)
-            numberOfAliveNeighbors++;
+        for (var innerRow = -1; innerRow <= 1; innerRow++) {
+            for (var innerColumn = -1; innerColumn <= 1; innerColumn++) {
+                
+                if (innerRow == 0 && innerColumn == 0) continue;
+                
+                var neighborRow = row + innerRow;
+                var neighborColumn = column + innerColumn;
+                
+                if (neighborRow >= 0 && neighborRow < _widthUniverse &&
+                    neighborColumn >= 0 && neighborColumn < _heightUniverse &&
+                    _universe[neighborRow, neighborColumn].GetState() is LivingCell) {
+                    numberOfAliveNeighbors++;
+                }
+            }
+        }
 
         return numberOfAliveNeighbors;
     }

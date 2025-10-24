@@ -40,6 +40,13 @@ public class GameOfLifeTestData
             universe2[5, 5] = new Cell(LivingCell.GetInstance());
             universe2[6, 7] = new Cell(LivingCell.GetInstance());
             yield return [universe2, 6, 6, LivingCell.GetInstance()];
+            
+            var universe3 = GameOfLifeTest.GenerateEmptyUniverse(10, 10);
+            universe3[5, 6] = new Cell(LivingCell.GetInstance());
+            universe3[5, 5] = new Cell(LivingCell.GetInstance());
+            universe3[6, 7] = new Cell(LivingCell.GetInstance());
+            universe3[7, 7] = new Cell(LivingCell.GetInstance());
+            yield return [universe3, 6, 6, DeadCell.GetInstance()];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

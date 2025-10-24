@@ -9,9 +9,13 @@ public class GameOfLifeTest
     {
         var universe = new Cell[width, height];
         var diedCell = DeadCell.GetInstance();
-        foreach (var (row, column) in Enumerable.Range(0, 10).SelectMany(i => Enumerable.Range(0, 10).Select(j => (i, j))))
+        
+        foreach (var row in Enumerable.Range(0, width))
         {
-            universe[row, column] = new Cell(diedCell);
+            foreach (var column in Enumerable.Range(0, height))
+            {
+                universe[row, column] = new Cell(diedCell);
+            }
         }
 
         return universe;
