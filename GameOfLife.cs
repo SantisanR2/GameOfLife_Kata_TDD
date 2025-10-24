@@ -1,19 +1,16 @@
 ﻿namespace GameOfLife;
 
-public class GameOfLife
+public class GameOfLife(bool[,] universe)
 {
-    public GameOfLife(bool[,] universe)
-    {
-        throw new NotImplementedException();
-    }
+    private readonly bool[,] universe = universe;
 
     public void nextGen()
     {
-        throw new NotImplementedException();
+        ;
     }
 
     public bool[,] GetUniverse()
     {
-        throw new NotImplementedException();
+        return universe;
     }
 }
