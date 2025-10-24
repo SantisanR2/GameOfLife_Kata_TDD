@@ -1,4 +1,5 @@
-﻿using AwesomeAssertions;
+﻿using System.Collections;
+using AwesomeAssertions;
 
 namespace GameOfLife;
 
@@ -29,18 +30,36 @@ public class GameOfLifeTest
         game.GetUniverse().Should().BeEquivalentTo(new bool[10,10]);
     }
 
-    [Fact]
-    public void Si_HayUnaCelulaViva_Y_TieneDosOTresVecinos_Debe_Vivir()
+    [Theory]
+    [ClassData(typeof(GameOfLifeTestData))]
+    public void Si_HayUnaCelulaViva_Y_TieneDosOTresVecinos_Debe_Vivir(bool[,] universe, int rowCell, int columnCell, bool expectedOutcomeCell)
     {
         //Arrange
-        var universe = new bool[10,10];
-        universe[5, 5] = true;
-        universe[4, 5] = true;
-        universe[5, 6] = true;
         var game = new GameOfLife(universe);
         //Act
         game.nextGen();
         //Assert
-        game.GetUniverse()[5,5].Should().Be(true);
+        game.GetUniverse()[rowCell, columnCell].Should().Be(expectedOutcomeCell);
     }
+}
+
+public class GameOfLifeTestData : IEnumerable<object[]>
+{
+    public IEnumerator<object[]> GetEnumerator()
+    {
+        var universe1 = new bool[10,10];
+        universe1[5, 5] = true;
+        universe1[4, 5] = true;
+        universe1[5, 6] = true;
+        yield return new object[] { universe1, 5, 5, true };
+
+        var universe2 = new bool[10, 10];
+        universe2[5, 5] = true;
+        universe2[5, 6] = true;
+        universe2[4, 5] = true;
+        universe2[6, 6] = true;
+        yield return new object[] { universe2, 5, 5, true };
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
