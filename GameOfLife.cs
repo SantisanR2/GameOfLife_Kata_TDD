@@ -30,7 +30,7 @@ public class GameOfLife(bool[,] universe)
                     numberOfAliveNeighbors++;
                 if (_universe[row + 1, column - 1])
                     numberOfAliveNeighbors++;
-                if (numberOfAliveNeighbors != 2)
+                if (numberOfAliveNeighbors < 2)
                     _universe[row, column] = false;
             }
         }
