@@ -31,7 +31,7 @@ public class GameOfLifeTest
     }
 
     [Theory]
-    [ClassData(typeof(GameOfLifeTestData))]
+    [ClassData(typeof(GameOfLifeTestData_Si_HayUnaCelulaViva_Y_TieneDosOTresVecinos_Debe_Vivir))]
     public void Si_HayUnaCelulaViva_Y_TieneDosOTresVecinos_Debe_Vivir(bool[,] universe, int rowCell, int columnCell, bool expectedOutcomeCell)
     {
         //Arrange
@@ -42,7 +42,8 @@ public class GameOfLifeTest
         game.GetUniverse()[rowCell, columnCell].Should().Be(expectedOutcomeCell);
     }
 
-    [Fact]
+    [Theory]
+    [ClassData(typeof(GameOfLifeTestData_Si_HayUnaCelulaMuerta_Y_TieneTresVecinos_Debe_Vivir))]
     public void Si_HayUnaCelulaMuerta_Y_TieneTresVecinos_Debe_Vivir()
     {
         //Arrange
@@ -75,7 +76,7 @@ public class GameOfLifeTest
     }
 }
 
-public class GameOfLifeTestData : IEnumerable<object[]>
+public class GameOfLifeTestData_Si_HayUnaCelulaViva_Y_TieneDosOTresVecinos_Debe_Vivir : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
@@ -91,6 +92,26 @@ public class GameOfLifeTestData : IEnumerable<object[]>
         universe2[4, 5] = true;
         universe2[6, 6] = true;
         yield return [universe2, 5, 5, true];
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+
+public class GameOfLifeTestData_Si_HayUnaCelulaMuerta_Y_TieneTresVecinos_Debe_Vivir : IEnumerable<object[]>
+{
+    public IEnumerator<object[]> GetEnumerator()
+    {
+        var universe1 = new bool[10,10];
+        universe1[4, 5] = true;
+        universe1[5, 6] = true;
+        universe1[6, 6] = true;
+        yield return [universe1, 5, 5, true];
+
+        var universe2 = new bool[10, 10];
+        universe2[5, 6] = true;
+        universe2[5, 5] = true;
+        universe2[6, 7] = true;
+        yield return [universe2, 6, 6, true];
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
