@@ -5,10 +5,10 @@ namespace GameOfLife;
 
 public class GameOfLifeTest
 {
-    public static Cell[,] GenerateEmptyUniverse()
+    public static Cell[,] GenerateEmptyUniverse(int width, int height)
     {
-        var universe = new Cell[10, 10];
-        var diedCell = DiedCell.GetInstance();
+        var universe = new Cell[width, height];
+        var diedCell = DeadCell.GetInstance();
         foreach (var (row, column) in Enumerable.Range(0, 10).SelectMany(i => Enumerable.Range(0, 10).Select(j => (i, j))))
         {
             universe[row, column] = new Cell(diedCell);
@@ -21,7 +21,7 @@ public class GameOfLifeTest
     public void Si_HayUnUniversoVacio_Debe_DarUnUniversoVacio()
     {
         //Arrange
-        var universe = GenerateEmptyUniverse();
+        var universe = GenerateEmptyUniverse(10, 10);
         var game = new GameOfLife(universe);
         //Act
         game.NextGen();
@@ -33,13 +33,13 @@ public class GameOfLifeTest
     public void Si_HayUnaCelulaViva_Y_TieneMenosDeDosVecinos_Debe_Morir()
     {
         //Arrange
-        var universe = GenerateEmptyUniverse();
+        var universe = GenerateEmptyUniverse(10, 10);
         universe[5, 5] = new Cell(LivingCell.GetInstance());
         var game = new GameOfLife(universe);
         //Act
         game.NextGen();
         //Assert
-        game.GetUniverse()[5, 5].GetState().Should().Be(DiedCell.GetInstance());
+        game.GetUniverse()[5, 5].GetState().Should().Be(DeadCell.GetInstance());
     }
 
     [Theory]
@@ -70,7 +70,7 @@ public class GameOfLifeTest
     public void Si_HayUnaCelulaViva_Y_TieneMasDeTresVecinos_Debe_Morir()
     {
         //Arrange
-        var universe = GenerateEmptyUniverse();
+        var universe = GenerateEmptyUniverse(10, 10);
         universe[5, 5] = new Cell(LivingCell.GetInstance());
         universe[4, 5] = new Cell(LivingCell.GetInstance());
         universe[5, 6] = new Cell(LivingCell.GetInstance());
@@ -80,6 +80,18 @@ public class GameOfLifeTest
         //Act
         game.NextGen();
         //Assert
-        game.GetUniverse()[5, 5].GetState().Should().Be(DiedCell.GetInstance());
+        game.GetUniverse()[5, 5].GetState().Should().Be(DeadCell.GetInstance());
+    }
+
+    [Theory]
+    [ClassData(typeof(GameOfLifeTestData.SiHayCelulasVivasYTieneVecinosFueraDelUniversoDebeTomarEsosVecinosComoMuertos))]
+    public void Si_HayCelulasVivas_Y_TieneVecinosFueraDelUniverso_Debe_TomarEsosVecinosComoMuertos(Cell[,] universe, int rowCell, int columnCell, ICellState expectedCellState)
+    {
+        //Arrange
+        var game = new GameOfLife(universe);
+        //Act
+        game.NextGen();
+        //Assert
+        game.GetUniverse()[rowCell, columnCell].GetState().Should().Be(expectedCellState);
     }
 }

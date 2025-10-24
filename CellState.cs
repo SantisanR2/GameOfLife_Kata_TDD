@@ -13,15 +13,15 @@ public class LivingCell : ICellState
     
     public ICellState NextState(int numberOfAliveNeighbors)
     {
-        return numberOfAliveNeighbors is < 2 or > 3 ? DiedCell.GetInstance() : this;
+        return numberOfAliveNeighbors is < 2 or > 3 ? DeadCell.GetInstance() : this;
     }
 }
 
-public class DiedCell : ICellState
+public class DeadCell : ICellState
 {
-    private static readonly DiedCell Instance = new DiedCell();
+    private static readonly DeadCell Instance = new DeadCell();
 
-    public static DiedCell GetInstance() => Instance;
+    public static DeadCell GetInstance() => Instance;
     
     public ICellState NextState(int numberOfAliveNeighbors)
     {

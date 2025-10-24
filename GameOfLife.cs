@@ -9,7 +9,7 @@ public class GameOfLife(Cell[,] universe)
         var newUniverse = new Cell[_universe.GetLength(0), _universe.GetLength(1)];
         foreach (var (row, column) in Enumerable.Range(0, 10).SelectMany(i => Enumerable.Range(0, 10).Select(j => (i, j))))
         {
-            newUniverse[row, column] = new Cell(DiedCell.GetInstance());
+            newUniverse[row, column] = new Cell(DeadCell.GetInstance());
         }
         
         for (var row = 0; row < _universe.GetLength(0); row++)
