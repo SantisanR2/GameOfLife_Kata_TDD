@@ -12,7 +12,7 @@ public class GameOfLife
         throw new NotImplementedException();
     }
 
-    public void GetUniverse()
+    public bool[,] GetUniverse()
     {
         throw new NotImplementedException();
     }
