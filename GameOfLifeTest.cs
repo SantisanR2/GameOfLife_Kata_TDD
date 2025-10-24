@@ -51,14 +51,14 @@ public class GameOfLifeTestData : IEnumerable<object[]>
         universe1[5, 5] = true;
         universe1[4, 5] = true;
         universe1[5, 6] = true;
-        yield return new object[] { universe1, 5, 5, true };
+        yield return [universe1, 5, 5, true];
 
         var universe2 = new bool[10, 10];
         universe2[5, 5] = true;
         universe2[5, 6] = true;
         universe2[4, 5] = true;
         universe2[6, 6] = true;
-        yield return new object[] { universe2, 5, 5, true };
+        yield return [universe2, 5, 5, true];
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
