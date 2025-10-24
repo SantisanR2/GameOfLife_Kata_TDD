@@ -2,7 +2,7 @@
 
 public class GameOfLife(bool[,] universe)
 {
-    private readonly bool[,] universe = universe;
+    private readonly bool[,] _universe = universe;
 
     public void nextGen()
     {
@@ -11,6 +11,6 @@ public class GameOfLife(bool[,] universe)
 
     public bool[,] GetUniverse()
     {
-        return universe;
+        return _universe;
     }
 }
