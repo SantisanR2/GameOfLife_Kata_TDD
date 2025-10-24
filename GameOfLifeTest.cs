@@ -13,7 +13,7 @@ public class GameOfLifeTest
         //Act
         game.nextGen();
         //Assert
-        game.GetUniverse().Should().Be(universe);
+        game.GetUniverse().Should().BeEquivalentTo(universe);
     }
 
     [Fact]
@@ -26,6 +26,6 @@ public class GameOfLifeTest
         //Act
         game.nextGen();
         //Assert
-        game.GetUniverse().Should().Be(new bool[10,10]);
+        game.GetUniverse().Should().BeEquivalentTo(new bool[10,10]);
     }
 }

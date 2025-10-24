@@ -2,11 +2,11 @@
 
 public class GameOfLife(bool[,] universe)
 {
-    private readonly bool[,] _universe = universe;
+    private bool[,] _universe = universe;
 
     public void nextGen()
     {
-        ;
+        _universe = new bool[10,10];
     }
 
     public bool[,] GetUniverse()
