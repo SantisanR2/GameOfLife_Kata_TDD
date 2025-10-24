@@ -6,19 +6,19 @@ public class GameOfLife(bool[,] universe)
 
     public void nextGen()
     {
-        
+        var NewUniverse = new bool[_universe.GetLength(0), _universe.GetLength(1)];
         for (var row = 0; row < _universe.GetLength(0); row++)
         {
             for (var column = 0; column < _universe.GetLength(1); column++)
             {
-                if (row == 5 && column == 5)
+                if (row - 1 >= 0 && row + 1 <= _universe.GetLength(0) - 1 && column - 1 >= 0 && column + 1 <= _universe.GetLength(1) - 1)
                 {
                     var numberOfAliveNeighbors = 0;
                     if (_universe[row - 1, column + 1])
                         numberOfAliveNeighbors++;
                     if (_universe[row, column + 1])
                         numberOfAliveNeighbors++;
-                    if (_universe[row +1 , column + 1])
+                    if (_universe[row + 1 , column + 1])
                         numberOfAliveNeighbors++;
                     if (_universe[row - 1, column])
                         numberOfAliveNeighbors++;
@@ -31,12 +31,14 @@ public class GameOfLife(bool[,] universe)
                     if (_universe[row + 1, column - 1])
                         numberOfAliveNeighbors++;
                     if (numberOfAliveNeighbors is < 2 or > 3)
-                        _universe[row, column] = false;
+                        NewUniverse[row, column] = false;
                     else
-                        _universe[row, column] = true;
+                        NewUniverse[row, column] = true;
                 }
             }
         }
+
+        _universe = NewUniverse;
     }
 
     public bool[,] GetUniverse()
