@@ -41,6 +41,21 @@ public class GameOfLifeTest
         //Assert
         game.GetUniverse()[rowCell, columnCell].Should().Be(expectedOutcomeCell);
     }
+
+    [Fact]
+    public void Si_HayUnaCelulaMuerta_Y_TieneTresVecinos_Debe_Vivir()
+    {
+        //Arrange
+        var universe = new bool[10, 10];
+        universe[4, 5] = true;
+        universe[5, 6] = true;
+        universe[6, 6] = true;
+        var game = new GameOfLife(universe);
+        //Act
+        game.nextGen();
+        //Assert
+        game.GetUniverse()[5, 5].Should().Be(true);
+    }
 }
 
 public class GameOfLifeTestData : IEnumerable<object[]>
