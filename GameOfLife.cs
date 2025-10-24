@@ -1,47 +1,50 @@
 ﻿namespace GameOfLife;
 
-public class GameOfLife(bool[,] universe)
+public class GameOfLife(Cell[,] universe)
 {
-    private bool[,] _universe = universe;
+    private Cell[,] _universe = universe;
 
-    public void nextGen()
+    public void NextGen()
     {
-        var NewUniverse = new bool[_universe.GetLength(0), _universe.GetLength(1)];
+        var newUniverse = new Cell[_universe.GetLength(0), _universe.GetLength(1)];
+        foreach (var (row, column) in Enumerable.Range(0, 10).SelectMany(i => Enumerable.Range(0, 10).Select(j => (i, j))))
+        {
+            newUniverse[row, column] = new Cell(DiedCell.GetInstance());
+        }
+        
         for (var row = 0; row < _universe.GetLength(0); row++)
         {
             for (var column = 0; column < _universe.GetLength(1); column++)
             {
-                if (row - 1 >= 0 && row + 1 <= _universe.GetLength(0) - 1 && column - 1 >= 0 && column + 1 <= _universe.GetLength(1) - 1)
-                {
-                    var numberOfAliveNeighbors = 0;
-                    if (_universe[row - 1, column + 1])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row, column + 1])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row + 1 , column + 1])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row - 1, column])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row + 1, column])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row - 1, column - 1])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row, column - 1])
-                        numberOfAliveNeighbors++;
-                    if (_universe[row + 1, column - 1])
-                        numberOfAliveNeighbors++;
-                    if (numberOfAliveNeighbors is < 2 or > 3)
-                        NewUniverse[row, column] = false;
-                    else
-                        NewUniverse[row, column] = true;
-                }
+                if (row - 1 < 0 || row + 1 > _universe.GetLength(0) - 1 || column - 1 < 0 ||
+                    column + 1 > _universe.GetLength(1) - 1) continue;
+                var numberOfAliveNeighbors = 0;
+                    
+                if (_universe[row - 1, column + 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row, column + 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row + 1 , column + 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row - 1, column].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row + 1, column].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row - 1, column - 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row, column - 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+                if (_universe[row + 1, column - 1].GetState() is LivingCell)
+                    numberOfAliveNeighbors++;
+
+                var nextState = _universe[row, column].GetState().NextState(numberOfAliveNeighbors);
+                newUniverse[row, column] = new Cell(nextState);
             }
         }
-
-        _universe = NewUniverse;
+        _universe = newUniverse;
     }
 
-    public bool[,] GetUniverse()
+    public Cell[,] GetUniverse()
     {
         return _universe;
     }
