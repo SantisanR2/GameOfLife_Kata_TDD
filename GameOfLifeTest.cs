@@ -15,4 +15,17 @@ public class GameOfLifeTest
         //Assert
         game.GetUniverse().Should().Be(universe);
     }
+
+    [Fact]
+    public void Si_HayUnaCelulaViva_Y_TieneMenosDeDosVecinos_Debe_Morir()
+    {
+        //Arrange
+        var universe = new bool[10, 10];
+        universe[5, 5] = true;
+        var game = new GameOfLife(universe);
+        //Act
+        game.nextGen();
+        //Assert
+        game.GetUniverse().Should().Be(new bool[10,10]);
+    }
 }
