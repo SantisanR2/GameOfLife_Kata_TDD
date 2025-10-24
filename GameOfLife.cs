@@ -26,29 +26,31 @@ public class GameOfLife(Cell[,] universe)
 
     private int GetNumberOfAliveNeighbors(int row, int column)
     {
-        if (row - 1 < 0 || row + 1 > _universe.GetLength(0) - 1 || column - 1 < 0 ||
-            column + 1 > _universe.GetLength(1) - 1)
-        {
-            return 0;
-        }
-        
         var numberOfAliveNeighbors = 0;
         
-        if (_universe[row - 1, column + 1].GetState() is LivingCell)
+        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
+            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row - 1, column + 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row, column + 1].GetState() is LivingCell)
+        if (row >= 0 && row < _universe.GetLength(0) &&
+            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row, column + 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row + 1 , column + 1].GetState() is LivingCell)
+        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
+            column + 1 >= 0 && column + 1 < _universe.GetLength(1) && _universe[row + 1 , column + 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row - 1, column].GetState() is LivingCell)
+        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
+            column >= 0 && column < _universe.GetLength(1) && _universe[row - 1, column].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row + 1, column].GetState() is LivingCell)
+        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
+            column >= 0 && column < _universe.GetLength(1) && _universe[row + 1, column].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row - 1, column - 1].GetState() is LivingCell)
+        if (row - 1 >= 0 && row - 1 < _universe.GetLength(0) &&
+            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row - 1, column - 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row, column - 1].GetState() is LivingCell)
+        if (row >= 0 && row < _universe.GetLength(0) &&
+            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row, column - 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
-        if (_universe[row + 1, column - 1].GetState() is LivingCell)
+        if (row + 1 >= 0 && row + 1 < _universe.GetLength(0) &&
+            column - 1 >= 0 && column - 1 < _universe.GetLength(1) && _universe[row + 1, column - 1].GetState() is LivingCell)
             numberOfAliveNeighbors++;
 
         return numberOfAliveNeighbors;
